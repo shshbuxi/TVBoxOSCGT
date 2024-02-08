@@ -28,7 +28,7 @@ jobs:
           - userName: q215613905
             repoName: TVBoxOS
             branchName: main
-          - userName: takagen99
+          - userName: shshbuxi
             repoName: Box
             branchName: main
           - userName: mlabalabala
