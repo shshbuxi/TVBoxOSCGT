@@ -30,7 +30,7 @@ jobs:
             branchName: main
           - userName: shshbuxi
             repoName: Box
-            branchName: main
+            branchName: 2f22539f4e346b1e564b357d9cd7b68c8fdbddd6
           - userName: mlabalabala
             repoName: box
             branchName: main
