@@ -25,15 +25,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - userName: q215613905
-            repoName: TVBoxOS
-            branchName: main
+          # - userName: q215613905
+          #   repoName: TVBoxOS
+          #   branchName: main
           - userName: takagen99
             repoName: Box
             branchName: faede040d04d9f5bdb040f96f3dc8f7e03302e73
-          - userName: mlabalabala
-            repoName: box
-            branchName: main
+          # - userName: mlabalabala
+          #   repoName: box
+          #   branchName: main
           #- userName: XiaoRanLiu3119
             #repoName: TVBoxOS-Mobile
             #branchName: main
@@ -80,12 +80,12 @@ jobs:
         run: |
           tar -cJf source-${{ env.commitS }}.tar.xz --exclude=.git --exclude=.github *
 
-      - name: Option For Test
-        working-directory: TVBoxOSC
-        run: |
-          #添加arm64支持，不支持ijk解码
-          sed -i "/armeabi-v7a[\'\"]$/s#\$#, 'arm64-v8a'#" app/build.gradle
-          sed -i "/armeabi-v7a[\'\"]$/s#\$#, 'arm64-v8a'#" player/build.gradle
+      # - name: Option For Test
+      #   working-directory: TVBoxOSC
+      #   run: |
+      #     #添加arm64支持，不支持ijk解码
+      #     sed -i "/armeabi-v7a[\'\"]$/s#\$#, 'arm64-v8a'#" app/build.gradle
+      #     sed -i "/armeabi-v7a[\'\"]$/s#\$#, 'arm64-v8a'#" player/build.gradle
 
       - name: Release Apk Sign
         working-directory: TVBoxOSC
