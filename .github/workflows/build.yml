@@ -57,14 +57,12 @@ jobs:
           fi
 
       - name: Checkout Source Code
-        if: ${{ env.commit }}
         run: |
           cd TVBoxOSC
           git checkout ${{ env.commit }}
           echo "tag=$(git log --date=format:'%Y%m%d-%H%M' --pretty=format:%cd ${{ env.commitS }} -1)" >> $GITHUB_ENV
 
       - name: Extra Modify
-        if: ${{ env.commit }}
         working-directory: TVBoxOSC
         run: |
           echo '修改VersionName'
@@ -78,13 +76,11 @@ jobs:
           fi
           
       - name: Compress Source Code
-        if: ${{ env.commit }}
         working-directory: TVBoxOSC
         run: |
           tar -cJf source-${{ env.commitS }}.tar.xz --exclude=.git --exclude=.github *
 
       - name: Option For Test
-        if: ${{ inputs.testOption }}
         working-directory: TVBoxOSC
         run: |
           #添加arm64支持，不支持ijk解码
@@ -92,7 +88,6 @@ jobs:
           sed -i "/armeabi-v7a[\'\"]$/s#\$#, 'arm64-v8a'#" player/build.gradle
 
       - name: Release Apk Sign
-        if: ${{ env.commit }}
         working-directory: TVBoxOSC
         run: |
           signingConfigs='ICAgIHNpZ25pbmdDb25maWdzIHtcCiAgICAgICAgaWYgKHByb2plY3QuaGFzUHJvcGVydHkoIlJFTEVBU0VfU1RPUkVfRklMRSIpKSB7XAogICAgICAgICAgICBteUNvbmZpZyB7XAogICAgICAgICAgICAgICAgc3RvcmVGaWxlIGZpbGUoUkVMRUFTRV9TVE9SRV9GSUxFKVwKICAgICAgICAgICAgICAgIHN0b3JlUGFzc3dvcmQgUkVMRUFTRV9TVE9SRV9QQVNTV09SRFwKICAgICAgICAgICAgICAgIGtleUFsaWFzIFJFTEVBU0VfS0VZX0FMSUFTXAogICAgICAgICAgICAgICAga2V5UGFzc3dvcmQgUkVMRUFTRV9LRVlfUEFTU1dPUkRcCiAgICAgICAgICAgICAgICB2MVNpZ25pbmdFbmFibGVkIHRydWVcCiAgICAgICAgICAgICAgICB2MlNpZ25pbmdFbmFibGVkIHRydWVcCiAgICAgICAgICAgICAgICBlbmFibGVWM1NpZ25pbmcgPSB0cnVlXAogICAgICAgICAgICAgICAgZW5hYmxlVjRTaWduaW5nID0gdHJ1ZVwKICAgICAgICAgICAgfVwKICAgICAgICB9XAogICAgfVwKXA=='
@@ -108,7 +103,6 @@ jobs:
 
       - name: Cache
         uses: actions/cache@main
-        if: ${{ env.commit }}
         with:
           path: |
             ~/.gradle/caches
@@ -118,18 +112,15 @@ jobs:
             ${{ runner.os }}-${{ matrix.userName }}-
             
       - name: Setup Gradle
-        if: ${{ env.commit }}
         uses: gradle/gradle-build-action@main
 
       - name: Build With Gradle
-        if: ${{ env.commit }}
         working-directory: TVBoxOSC
         run: |
           chmod +x gradlew
           ./gradlew assemblerelease --build-cache --parallel --daemon --warning-mode all
 
       - name: Prepare App
-        if: ${{ env.commit }}
         working-directory: TVBoxOSC
         run: |
           rm -rf apk/
@@ -139,7 +130,6 @@ jobs:
           done
 
       - name: Release Note
-        if: ${{ env.commit }}
         working-directory: TVBoxOSC
         run: |
           lastCommit=$(grep "${{ matrix.userName }}\/${{ matrix.repoName }}" ${{ github.workspace }}/README.md |grep -o '[a-z0-9]\{40\}')
@@ -153,7 +143,6 @@ jobs:
 
       - name: Upload App To Artifact
         uses: actions/upload-artifact@main
-        if: ${{ env.commit }}
         continue-on-error: true
         with:
           name: my-build-apk
